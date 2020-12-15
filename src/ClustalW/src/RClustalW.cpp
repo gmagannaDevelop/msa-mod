@@ -4,8 +4,31 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+// begin parallel headers
+#include<iostream>
+#include<string>
+#include<random>
+// end parallel headers
+
 using namespace std;
 using namespace Rcpp;
+
+mt19937 generator{random_device{}()};
+//modify range according to your need "A-Z","a-z" or "0-9" or whatever you need.
+uniform_int_distribution<int> distribution{'a', 'z'};
+
+string parallel_hash(void){
+    // adjust len as appropriate. 
+    // default 10 to be extra sure we won't repeat a word
+    auto generate_len = 10; 
+    string rand_str(generate_len, '\0');
+    for(auto& dis: rand_str)
+        dis = distribution(generator);
+
+    return rand_str;
+}
+
+
 
 namespace clustalw
 {
@@ -66,7 +89,7 @@ SEXP RClustalW(SEXP rInputSeqs,
             args.push_back(file);
         } else {
             //sequence from R
-            string file = "-INFILE=internalRsequence";
+            string file = "-INFILE=internalRsequence" + parallel_hash();
             args.push_back(file);
 
             //rInputSeqs

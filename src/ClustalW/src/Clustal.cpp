@@ -1093,11 +1093,12 @@ int Clustal::commandLineReadSeq(int firstSeq, ClustalWInput *input)
     FileReader readInputFile;
     string line = userParameters->getSeqName();
 
-    if (strcmp(line.c_str(), "internalRsequence") == 0) {
+    //if (strcmp(line.c_str(), "internalRsequence") == 0) {
+        // commented this condition because it is hardcoded
     	code = readInputFile.readCharacterSeqs(&alignmentObj, firstSeq, &offendingSeq, input);
-    } else {
-    	code = readInputFile.readSeqs(&alignmentObj, firstSeq, &offendingSeq);
-    }
+    //} else {
+    //	code = readInputFile.readSeqs(&alignmentObj, firstSeq, &offendingSeq);
+    //}
 
     if(code != OK)
     {
