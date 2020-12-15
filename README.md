@@ -15,3 +15,25 @@ http://www.bioinf.jku.at/software/msa/.
 
 Although the package is maintained by Ulrich Bodenhofer, the package itself
 has been implemented mainly by Enrico Bonatesta and Christoph Kainrath-Horejs.
+
+# Modifications
+I experimented some issues whilst trying to use the `msa::clustalw` function inside of
+a parallel nested loop.
+
+Small modifications found here implemented by Gustavo Magaña López, who claims
+no ownership of this package.
+
+# Caveats 
+
+Compiling this package needs a **gcc** version lower than 10. 
+
+I have achieved it using gcc-9 on Pop!\_OS.
+
+```bash
+gcc --version 
+gcc (Ubuntu 9.3.0-18ubuntu1) 9.3.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+```
+
