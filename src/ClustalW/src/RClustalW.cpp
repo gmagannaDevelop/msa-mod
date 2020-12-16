@@ -13,19 +13,31 @@
 using namespace std;
 using namespace Rcpp;
 
-mt19937 generator{random_device{}()};
-//modify range according to your need "A-Z","a-z" or "0-9" or whatever you need.
-uniform_int_distribution<int> distribution{'a', 'z'};
-
 string parallel_hash(void){
-    // adjust len as appropriate. 
-    // default 10 to be extra sure we won't repeat a word
-    auto generate_len = 10; 
-    string rand_str(generate_len, '\0');
-    for(auto& dis: rand_str)
-        dis = distribution(generator);
+    /*
+        Function constructed from these two SO answers :
+        https://stackoverflow.com/questions/47977829/generate-a-random-string-in-c11
+        https://stackoverflow.com/questions/7560114/random-number-c-in-some-range
+    */
 
-    return rand_str;
+    // Random sequence generation :
+    string possible_characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    std::random_device rd;
+    std::mt19937 engine(rd());
+    std::uniform_int_distribution<> dist(0, possible_characters.size()-1);
+
+    // Random determination of sequence length : 
+    std::random_device rd2; // obtain a random number from hardware
+    std::mt19937 gen(rd2()); // seed the generator
+    std::uniform_int_distribution<> distr(5, 18); // define the range
+
+    int max_length = distr(gen); // generate sequence length 
+    string ret = "";
+    for(int i = 0; i < max_length; i++){
+        int random_index = dist(engine); //get index between 0 and possible_characters.size()-1
+        ret += possible_characters[random_index];
+    }
+    return ret;
 }
 
 
