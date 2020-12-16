@@ -71,6 +71,7 @@ SEXP RClustalW(SEXP rInputSeqs,
 	Rcpp::List retList;
     try {
         struct ClustalWInput input;
+        string __filename;
         vector<string> args;
         args.push_back(".");
         Rcpp::List rparam(rParams); // Get parameters in params.
@@ -89,7 +90,8 @@ SEXP RClustalW(SEXP rInputSeqs,
             args.push_back(file);
         } else {
             //sequence from R
-            string file = "-INFILE=internalRsequence" + parallel_hash();
+            __filename = "internalRsequence" + parallel_hash(); 
+            string file = "-INFILE=" + __filename;
             args.push_back(file);
 
             //rInputSeqs
@@ -693,11 +695,15 @@ SEXP RClustalW(SEXP rInputSeqs,
         //for now, we only return multiple sequence alignment
         retList = Rcpp::List::create(Rcpp::Named("msa") = Rcpp::CharacterVector(output.msa.begin(), output.msa.end()));
 
-        if (fileExists("internalRsequence.aln")) {
-        	remove("internalRsequence.aln");
+        string __aln_file = __filename + ".aln";
+        string __dnd_file = __filename + ".dnd";
+        const char * _aln_file = __aln_file.c_str();
+        const char * _dnd_file = __dnd_file.c_str();
+        if (fileExists(_aln_file)) {
+        	remove(_aln_file);
         }
-        if (fileExists("internalRsequence.dnd")) {
-        	remove("internalRsequence.dnd");
+        if (fileExists(_dnd_file)) {
+        	remove(_dnd_file);
         }
 
     } catch(int i) {
